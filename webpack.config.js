@@ -1,23 +1,23 @@
-//Sirve para identificar la ruta de donde se encuentra este archivo
-const path = require('path')
-//Me permite trabajar con documentos HTML
+// Sirve para identificar la ruta de donde se encuentra este archivo
+const path = require('path');
+
+// Me permite trabajar con documentos html
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-//Extraer el codigo CSS, minimificarlo y optimizarlo. Ademas lo agrega como parte del head
+
+// Extraer el código css, minificarlo y optimizarlo. Ademas lo agrega como parte del head
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-//Nos permite copiar archivos de una ruta a otra
-const CoyWebpackPlugin = require('copy-webpack-plugin');
 
-mosdule.exports = (env, argv) => {
+// Nos permite copiar archivos de una ruta a otra
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-    //Los operadores en java script y diferencias entre el operador == y ===
+module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
-
     return {
         entry: {
             index: './src/index.js',
         },
         output: {
-            filename: '[name].js',
+            filename: '[name].[contenthash].js',
             path: path.resolve(__dirname, 'dist')
         },
         module: {
@@ -30,9 +30,9 @@ mosdule.exports = (env, argv) => {
                     ]
                 },
                 {
-                    test:/\.js$/,
-                    include: path.resolve(__dirname, 'src/assests/js'),
-                    use:{
+                    test: /\.js$/,
+                    include: path.resolve(__dirname, 'src/assets/js'),
+                    use: {
                         loader: 'babel-loader',
                         options: {
                             presets: ['@babel/preset-env']
@@ -41,17 +41,23 @@ mosdule.exports = (env, argv) => {
                 }
             ]
         },
-        plugins: [],
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: './src/index.html',
+                chunks: ['index']
+            }),
+            // averiguar que significa un spread operator
+            ...(isProduction ? [new MiniCssExtractPlugin({ filename: 'assets/css/[name].[contenthash].css' })] : [])
+        ],
         devServer: {
             static: {
-                directory: path.join(_dirname, 'dist'),
+                directory: path.join(__dirname, 'dist'),
             },
             open: true,
             hot: true,
-            warchFiles: [
-                "src/**/*"
+            watchFiles: [
+                'src/**/*'
             ]
         }
     };
 }
-
