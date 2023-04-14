@@ -1,12 +1,91 @@
 <!DOCTYPE html>
 <html lang="es-CO">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profesores</title>
 </head>
+
 <body>
-    
+    <header class="my-3">
+        <h1 class="text-center">Profesores</h1>
+    </header>
+
+    <main class="container">
+        <section class="row text-center">
+            <article class="col-xs-12 col-md-6">
+                Imagen
+            </article>
+            <article class="col-xs-12 col-md-6">
+                Formulario
+            </article>
+        </section>
+        <section class="row">
+            <div class="col-12">
+                <table class="table table-hover">
+                    <caption>
+                        Registro de los profesores
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                Id de profesor
+                            </th>
+                            <th scope="col">
+                                Nombre
+                            </th>
+                            <th scope="col">
+                                Descripcion
+                            </th>
+                            <th scope="col">
+                                Correo
+                            </th>
+                            <th scope=col>
+                                Fecha de nacimiento
+                            </th>
+                            <th scope="col">
+                                Opciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                102030
+                            </td>
+                            <td>
+                                Nicolas Moreno
+                            </td>
+                            <td>
+                                Estudio en UPB con Yhoan
+                            </td>
+                            <td>
+                                @mn777
+                            </td>
+                            <td>
+                                15/03/1999
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary">
+                                    <em class="fa fa-pencil"></em>Editar
+                                </button>
+                                <button type="button" class="btn btn-danger">
+                                    <em class="fa fa-trash"></em>Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        Derechos reservados por Nick <em class='fa-sharp fa-solid fa-copyright'></em>
+    </footer>
 </body>
+
 </html>
