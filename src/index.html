@@ -16,68 +16,100 @@
     <main class="container">
         <section class="row text-center">
             <article class="col-xs-12 col-md-6">
-                Imagen
+                <img src="./assets/img/teachers.jpg" alt="Profesores" />
             </article>
             <article class="col-xs-12 col-md-6">
-                Formulario
+                <form novalidate class="form-floating" id="teacherForm">
+                    <div class="form-floating mb-3">
+                        <input type="textDescription" name="textDescription" id="name" class="form-control" required>
+                        <label for="textDescription">Nombre</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <textarea type="txtDescription" name="txtDescription" id="texDescription" cols="30" rows="30" class="form-control"></textarea>
+                        <label for="texDescription">Descripcion</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" name="txtEmail" id="textEmail" cols="30" rows="30" class="form-control"></textarea>
+                        <label for="textEmail">Correo Electronico</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="date" name="txtBirthDate" id="textBirthDate" cols="30" rows="30" class="form-control" placeholder="Ejm: 05/07/1993"></textarea>
+                        <label for="textBirthDate">Fecha de cumpleaños</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-grid col-md-6">
+                            <button type="reset" id="btnCancel" class="btn btn-secondary">Cancelar</button><!--Acciones negativas a la izquierda-->
+                        </div>
+
+                        <div class="d-grid col-md-6">
+                            <button type="submit" id="btnSubmit" class="btn btn-success">Enviar</button>
+                        </div>
+                    </div>
+                </form>
             </article>
         </section>
-        <section class="row">
+        <section class="row mt-3">
             <div class="col-12">
-                <table class="table table-hover">
-                    <caption>
-                        Registro de los profesores
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                Id de profesor
-                            </th>
-                            <th scope="col">
-                                Nombre
-                            </th>
-                            <th scope="col">
-                                Descripcion
-                            </th>
-                            <th scope="col">
-                                Correo
-                            </th>
-                            <th scope=col>
-                                Fecha de nacimiento
-                            </th>
-                            <th scope="col">
-                                Opciones
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                102030
-                            </td>
-                            <td>
-                                Nicolas Moreno
-                            </td>
-                            <td>
-                                Estudio en UPB con Yhoan
-                            </td>
-                            <td>
-                                @mn777
-                            </td>
-                            <td>
-                                15/03/1999
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary">
-                                    <em class="fa fa-pencil"></em>Editar
-                                </button>
-                                <button type="button" class="btn btn-danger">
-                                    <em class="fa fa-trash"></em>Eliminar
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <caption>
+                            Registro de los profesores
+                        </caption>
+                        <thead>
+                            <tr class="table-dark text-center">
+                                <th scope="col">
+                                    Id de profesor
+                                </th>
+                                <th scope="col">
+                                    Nombre
+                                </th>
+                                <th scope="col">
+                                    Descripcion
+                                </th>
+                                <th scope="col">
+                                    Correo
+                                </th>
+                                <th scope=col>
+                                    Fecha de nacimiento
+                                </th>
+                                <th scope="col">
+                                    Opciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="align-middle">
+                                <td class="text-center">
+                                    102030
+                                </td>
+                                <td>
+                                    Nicolas Moreno
+                                </td>
+                                <td>
+                                    Estudio en UPB con Yhoan
+                                </td>
+                                <td>
+                                    @mn777
+                                </td>
+                                <td>
+                                    15/03/1999
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <em class="fa fa-pencil"></em>Editar
+                                    </button>
+                                    <button type="button" class="btn btn-danger">
+                                        <em class="fa fa-trash"></em>Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 

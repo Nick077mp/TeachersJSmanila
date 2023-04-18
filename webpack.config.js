@@ -39,16 +39,36 @@ module.exports = (env, argv) => {
                             presets: ['@babel/preset-env']
                         }
                     }
+                },
+                {
+                    test: /\.(png|jpg|jpeg|gif|svg)$/,
+                    use: [
+                        {
+                            loader: 'url-loader',
+                            options: {
+                                limit: 8192,
+                                name: 'assets/img/[name].[ext]'
+                            }
+                        }
+                    ]
                 }
             ]
         },
         plugins: [
             new HtmlWebpackPlugin({
                 template: './src/index.html',
-                chunks: ['index','styles']
+                chunks: ['index', 'styles']
             }),
             // averiguar que significa un spread operator
-            ...(isProduction ? [new MiniCssExtractPlugin({ filename: 'assets/css/[name].[contenthash].css' })] : [])
+            ...(isProduction ? [new MiniCssExtractPlugin({ filename: 'assets/css/[name].[contenthash].css' })] : []),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: './src/assets/img',
+                        to: 'assets/img'
+                    }
+                ]
+            })
         ],
         devServer: {
             static: {
