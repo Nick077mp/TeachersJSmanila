@@ -1,6 +1,7 @@
 //Encargado de la interaccion de javascript con  html
+import alertify from 'alertifyjs';  
 
-import { formElements, getFormData } from './form';
+import { formElements, getFormData,resetForm } from './form';
 import { createTeacher, readTeachers } from './repository';
 
 export function listeners() {
@@ -16,6 +17,8 @@ function listenFormSubmitEvent() {
     formElements.form.addEventListener('submit', (event) => {
         event.preventDefault();
         createTeacher(getFormData());
+        resetForm();
+        alertify.success('Profesor guardado correctamente');
         listTeachers();
     });
 }
@@ -25,27 +28,87 @@ function listTeachers() {
     const tbody = document.querySelector('#tblTeachers tbody')
     tbody.innerHTML = '';
 
+    if ( arrayTeachers.length > 0 ) {
+        arrayTeachers.forEach((teacher) => {
+
+        });
+
+    } else {
+        const rowEmpty = document.createElement('tr');
+        const colEmpty = document.createElement('td');
+        colEmpty.setAttribute('colspan', '6');
+        colEmpty.textContent = "No se encuentran registros disponibles";
+        colEmpty.classList.add('text-center');
+        rowEmpty.appendChild(colEmpty);
+
+        tbody.appendChild(rowEmpty);
+
+    }
+
     arrayTeachers.forEach((teacher, index) => {
+
+        const { id, name,description,email, BirthDate} = teacher;
+        console.log(name);
+
         //Creo la fila
         const row = document.createElement('tr');
+        row.classList.add('align-middle')
 
         //Creo las columnas
         const colId = document.createElement('td');
-        colId.textContent = index;
+        colId.textContent = id;
+        colId.classList.add('text-center');
 
         const colName = document.createElement('td');
-        colName.textContent = teacher.name;
+        colName.textContent = name;
 
         const colDescription = document.createElement('td');
-        colDescription.textContent = teacher.description;
+        colDescription.textContent = description;
 
         const colEmail = document.createElement('td');
-        colEmail.textContent = teacher.email;
+        colEmail.textContent = email;
 
         const colBirthDate = document.createElement('td');
-        colBirthDate.textContent = teacher.birthDate;
+        colBirthDate.textContent = BirthDate;
 
         const colButtons = document.createElement('td');
+
+        const editButton = document.createElement('button');
+        editButton.classList.add('btn', 'btn-primary', 'btn-edit');
+        editButton.dataset.id = id;
+        editButton.setAttribute('title', 'Editar');
+
+        const editIcon = document.createElement('em');
+        editIcon.classList.add('fa', 'fa-pencil');
+        editButton.appendChild(editIcon);
+
+        colButtons.appendChild(editButton);
+
+
+
+
+
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('btn', 'btn-danger', 'btn-delete', 'm-1');
+        deleteButton.dataset.id = id;
+        deleteButton.setAttribute('title', 'Eliminar');
+
+        const deleteIcon = document.createElement('em');
+        deleteIcon.classList.add('fa', 'fa-trash');
+        deleteButton.appendChild(deleteIcon);
+
+        colButtons.appendChild(deleteButton);
+
+
+
+    
+
+        
+
+
+
+        
+
 
         //Agrego las columnas a la fila 
         row.appendChild(colId);
