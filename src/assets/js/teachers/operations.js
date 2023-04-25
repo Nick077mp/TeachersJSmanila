@@ -1,9 +1,14 @@
-//Encargado de la interaccion de javascript con  html
-import alertify from 'alertifyjs';  
+// Encargado de la interacción de javascript con  html
+// Third Libraries
+import alertify from 'alertifyjs';
 
-import { formElements, getFormData,resetForm } from './form';
+import { formElements, fieldConfigurations, getFormData, resetForm } from './form';
 import { createTeacher, readTeachers } from './repository';
 
+// Own Libraries
+import { validateForm } from './../utils/validations';
+
+// Module Libraries
 export function listeners() {
 
     window.addEventListener('load', () => {
@@ -16,10 +21,17 @@ export function listeners() {
 function listenFormSubmitEvent() {
     formElements.form.addEventListener('submit', (event) => {
         event.preventDefault();
-        createTeacher(getFormData());
-        resetForm();
-        alertify.success('Profesor guardado correctamente');
-        listTeachers();
+
+        if (validateForm(fieldConfigurations)) {
+            createTeacher(getFormData());
+            resetForm();
+            alertify.success('Profesor guardado correctamente');
+            listTeachers();
+        }else {
+            alertify.error('Verificar los datos del formulario');
+        }
+
+
     });
 }
 
@@ -28,7 +40,7 @@ function listTeachers() {
     const tbody = document.querySelector('#tblTeachers tbody')
     tbody.innerHTML = '';
 
-    if ( arrayTeachers.length > 0 ) {
+    if (arrayTeachers.length > 0) {
         arrayTeachers.forEach((teacher) => {
 
         });
@@ -47,7 +59,7 @@ function listTeachers() {
 
     arrayTeachers.forEach((teacher, index) => {
 
-        const { id, name,description,email, BirthDate} = teacher;
+        const { id, name, description, email, BirthDate } = teacher;
         console.log(name);
 
         //Creo la fila
@@ -101,13 +113,13 @@ function listTeachers() {
 
 
 
-    
-
-        
 
 
 
-        
+
+
+
+
 
 
         //Agrego las columnas a la fila 
