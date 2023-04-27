@@ -1,12 +1,13 @@
 // Encargado de la interacción de javascript con  html
 // Third Libraries
 import alertify from 'alertifyjs';
+import Swal from 'sweetalert2'
 
-import { formElements, fieldConfigurations, getFormData, resetForm } from './form';
-import { createTeacher, readTeachers } from './repository';
+import { formElements, fieldConfigurations, getFormData, resetForm, setFormData } from './form';
+import { createTeacher, readTeachers, findTeacherById } from './repository';
 
 // Own Libraries
-import { validateForm } from './../utils/validations';
+import { validateForm, validateField, removeInputErrorMessage, removeErrorClassNameFields, removeErrorMessageElements } from './../utils/validations';
 
 // Module Libraries
 export function listeners() {
@@ -14,6 +15,10 @@ export function listeners() {
     window.addEventListener('load', () => {
         listenFormSubmitEvent();
         listTeachers();
+        listenFormFieldsChangeEvent();
+        listenFormResetEvent();
+        listenTableClickEvent();
+
 
     });
 }
@@ -21,13 +26,16 @@ export function listeners() {
 function listenFormSubmitEvent() {
     formElements.form.addEventListener('submit', (event) => {
         event.preventDefault();
+        alertify.dismissAll();
 
         if (validateForm(fieldConfigurations)) {
             createTeacher(getFormData());
             resetForm();
+            removeErrorClassNameFields('is-valid');
             alertify.success('Profesor guardado correctamente');
             listTeachers();
-        }else {
+            listenFormFieldsChangeEvent();
+        } else {
             alertify.error('Verificar los datos del formulario');
         }
 
@@ -86,12 +94,13 @@ function listTeachers() {
         const colButtons = document.createElement('td');
 
         const editButton = document.createElement('button');
-        editButton.classList.add('btn', 'btn-primary', 'btn-edit');
+        editButton.classList.add('btn', 'btn-primary', 'btn-edit', 'm-1');
         editButton.dataset.id = id;
         editButton.setAttribute('title', 'Editar');
 
         const editIcon = document.createElement('em');
         editIcon.classList.add('fa', 'fa-pencil');
+        editIcon.dataset.id = id;
         editButton.appendChild(editIcon);
 
         colButtons.appendChild(editButton);
@@ -107,6 +116,7 @@ function listTeachers() {
 
         const deleteIcon = document.createElement('em');
         deleteIcon.classList.add('fa', 'fa-trash');
+        deleteIcon.dataset.id = id;
         deleteButton.appendChild(deleteIcon);
 
         colButtons.appendChild(deleteButton);
@@ -133,5 +143,85 @@ function listTeachers() {
         //Agrego la fila al tbody
         tbody.appendChild(row);
     });
+}
+
+function listenFormFieldsChangeEvent() {
+    fieldConfigurations.forEach(({ input, validations }) => {
+
+        input.addEventListener('change', () => {
+            removeInputErrorMessage(input);
+
+            validations.forEach(() => {
+                validateField(input, validationConfig);
+
+            })
+
+        })
+    });
+
+
+}
+
+function listenFormResetEvent() {
+    formElements.form.addEventListener('reset', () => {
+        removeErrorMessageElements();
+        removeErrorClassNameFields('is-valid');
+        resetForm();
+        alertify.dismissAll();
+    });
+}
+
+function listenTableClickEvent() {
+    const table = document.getElementById('tblTeachers');
+    table.addEventListener('click', ({target}) => {
+
+        const idTeacher = target.getAttribute('data-id');
+    
+
+        if(target.classList.contains('btn-edit')||target.classList.contains('fa-pencil')) {
+            editTeacher(idTeacher);
+            
+
+        } else if(target.classList.contains('btn-delete') ||target.classList.contains('fa-trash')) {
+
+            Swal.fire({
+                title:' ¿Estas seguro de que quieres eliminar el profesor',
+                text: 'No podras deshacer esta accion',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor:'#b2b2b2',
+                confirmButtonText:'Si,Eliminar',
+                cancelButtonText:'Cerrar'
+            }).then((resultConfirm) => {
+                if (resultConfirm.isConfirmed) {
+
+                    console.log('Confirmar que elimina')
+
+                } else {
+                    alertify.message('Accion cancelada');
+                }
+
+            })
+        }
+
+    });
+
+
+}
+function editTeacher(idTeacher) {
+
+    const teacher = findTeacherById(idTeacher);
+
+    if(teacher) {
+        setFormData(teacher);
+        window.scrollTo({top: 0, behavior: 'smooth'})
+
+    }else {
+        alertify.warning('El profesor que seleccionaste no existe, verifique la información')
+    }
+
+ 
+    
 }
 

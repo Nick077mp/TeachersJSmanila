@@ -21,7 +21,7 @@ export const formElements = {
 
 export const fieldConfigurations = [
     {
-        input:formElements.fields.name,
+        input: formElements.fields.name,
         validations: [
             {
                 errorId: `${formElements.fields.name.id}Required`,
@@ -36,7 +36,7 @@ export const fieldConfigurations = [
         ]
     },
     {
-        input:formElements.fields.description,
+        input: formElements.fields.description,
         validations: [
             {
                 errorId: `${formElements.fields.description.id}Required`,
@@ -49,8 +49,49 @@ export const fieldConfigurations = [
                 }
             }
         ]
-    }
+    },
+
+    {
+        input: formElements.fields.email,
+        validations: [
+            {
+                errorId: `${formElements.fields.email.id}Required`,
+                errorMessage: 'El email es obligatorio.',
+                //Las validaciones retornaran un falso cuando debe mostrar el mensaje de error 
+                // y un false cunado no debe mostrarlo
+                validationFunction: (value) => {
+                    return value.trim() !== '';
+
+                }
+            },
+            {
+                errorId: `${formElements.fields.email.id}Pattern`,
+                errorMessage:"El correo electronico no cumple con el formato correcto.",
+                validationFunction: (value) => {
+                    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+
+                }
+            }
+        ]
+    },
+
+    {
+        input:formElements.fields.birthDate,
+        validations: [
+            {
+                errorId: `${ formElements.fields.birthDate.id }Required`,
+                errorMessage: 'El birthDate es obligatorio.',
+                //Las validaciones retornaran un falso cuando debe mostrar el mensaje de error 
+                // y un false cunado no debe mostrarlo
+                validationFunction: (value) => {
+                    return value.trim() !== '';
+
+                }
+            }
+        ]
+    },
 ];
+
 
 
 
@@ -71,4 +112,13 @@ export function getFormData() {
 export function resetForm() {
     formElements.form.reset();
 
+}
+
+export function setFormData(teacher) {
+
+        const { id, name, description, email, birthDate } = teacher;
+        formElements.fields.name.value = name;
+        formElements.fields.description.value = description;
+        formElements.fields.email.value = email;
+        formElements.fields.birthDate.value = birthDate;
 }
