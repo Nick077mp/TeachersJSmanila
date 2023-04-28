@@ -4,7 +4,7 @@ import alertify from 'alertifyjs';
 import Swal from 'sweetalert2'
 
 import { formElements, fieldConfigurations, getFormData, resetForm, setFormData } from './form';
-import { createTeacher, readTeachers, findTeacherById } from './repository';
+import { createTeacher, readTeachers, findTeacherById, updateTeacher, deleteTeacher } from './repository';
 
 // Own Libraries
 import { validateForm, validateField, removeInputErrorMessage, removeErrorClassNameFields, removeErrorMessageElements } from './../utils/validations';
@@ -29,7 +29,21 @@ function listenFormSubmitEvent() {
         alertify.dismissAll();
 
         if (validateForm(fieldConfigurations)) {
-            createTeacher(getFormData());
+
+            const teacher = getFormData();
+            const idTeacher = formElements.fields.id.value.trim();
+
+
+
+            if (idTeacher) {
+
+                updateTeacher(teacher);
+
+            } else {
+                createTeacher(teacher);
+
+            }
+
             resetForm();
             removeErrorClassNameFields('is-valid');
             alertify.success('Profesor guardado correctamente');
@@ -173,36 +187,18 @@ function listenFormResetEvent() {
 
 function listenTableClickEvent() {
     const table = document.getElementById('tblTeachers');
-    table.addEventListener('click', ({target}) => {
+    table.addEventListener('click', ({ target }) => {
 
         const idTeacher = target.getAttribute('data-id');
-    
 
-        if(target.classList.contains('btn-edit')||target.classList.contains('fa-pencil')) {
+
+        if (target.classList.contains('btn-edit') || target.classList.contains('fa-pencil')) {
             editTeacher(idTeacher);
-            
 
-        } else if(target.classList.contains('btn-delete') ||target.classList.contains('fa-trash')) {
 
-            Swal.fire({
-                title:' ¿Estas seguro de que quieres eliminar el profesor',
-                text: 'No podras deshacer esta accion',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor:'#b2b2b2',
-                confirmButtonText:'Si,Eliminar',
-                cancelButtonText:'Cerrar'
-            }).then((resultConfirm) => {
-                if (resultConfirm.isConfirmed) {
+        } else if (target.classList.contains('btn-delete') || target.classList.contains('fa-trash')) {
+            confirmDelete(idTeacher);
 
-                    console.log('Confirmar que elimina')
-
-                } else {
-                    alertify.message('Accion cancelada');
-                }
-
-            })
         }
 
     });
@@ -211,17 +207,53 @@ function listenTableClickEvent() {
 }
 function editTeacher(idTeacher) {
 
-    const teacher = findTeacherById(idTeacher);
+    const teacher = findTeacherById(parseInt(idTeacher));
 
-    if(teacher) {
+    if (teacher) {
         setFormData(teacher);
-        window.scrollTo({top: 0, behavior: 'smooth'})
+        window.scrollTo({ top: 0, behavior: 'smooth' })
 
-    }else {
+    } else {
         alertify.warning('El profesor que seleccionaste no existe, verifique la información')
     }
 
- 
-    
+
+
+}
+
+function confirmDelete(idTeacher) {
+
+    const teacher = findTeacherById(parseInt(idTeacher));
+
+    if (teacher) {
+
+        Swal.fire({
+            title: `¿Estas seguro de que quieres eliminar el profesor: ${teacher.name} ?`,
+            text: 'No podras deshacer esta accion',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#b2b2b2',
+            confirmButtonText: 'Si,Eliminar',
+            cancelButtonText: 'Cerrar'
+        }).then((resultConfirm) => {
+            if (resultConfirm.isConfirmed) {
+
+                deleteTeacher(parseInt(idTeacher));
+                listTeachers();
+                alertify.success('El registro ha sido eliminado')
+
+            } else {
+                alertify.dismissAll();
+                alertify.message('Accion cancelada');
+            }
+
+        });
+    } else {
+        alertify.error('El profesor que seleccionaste no existe, verique la informacion')
+    }
+
+
+
 }
 

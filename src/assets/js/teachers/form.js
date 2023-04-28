@@ -72,7 +72,7 @@ export const fieldConfigurations = [
             },
             {
                 errorId: `${formElements.fields.email.id}Pattern`,
-                errorMessage:"El correo electronico no cumple con el formato correcto.",
+                errorMessage: "El correo electronico no cumple con el formato correcto.",
                 validationFunction: (value) => {
                     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
 
@@ -82,10 +82,10 @@ export const fieldConfigurations = [
     },
 
     {
-        input:formElements.fields.birthDate,
+        input: formElements.fields.birthDate,
         validations: [
             {
-                errorId: `${ formElements.fields.birthDate.id }Required`,
+                errorId: `${formElements.fields.birthDate.id}Required`,
                 errorMessage: 'El birthDate es obligatorio.',
                 //Las validaciones retornaran un falso cuando debe mostrar el mensaje de error 
                 // y un false cunado no debe mostrarlo
@@ -106,11 +106,11 @@ export const fieldConfigurations = [
 
 export function getFormData() {
     const teacher = {
-         id: new Date().getTime(),
-         name: formElements.fields.name.value,
-         description: formElements.fields.description.value,
-         email: formElements.fields.email.value,
-         birthDate: formElements.fields.birthDate.value,
+        id: formElements.fields.id.value.trim() ? parseInt(formElements.fields.id.value.trim()) : new Date().getTime(),
+        name: formElements.fields.name.value,
+        description: formElements.fields.description.value,
+        email: formElements.fields.email.value,
+        birthDate: formElements.fields.birthDate.value,
     };
     return teacher;
 }
@@ -123,13 +123,13 @@ export function resetForm() {
 
 export function setFormData(teacher) {
 
-        const { id, name, description, email, birthDate } = teacher;
-        formElements.fields.id.value = id;
-        formElements.fields.name.value = name;
-        formElements.fields.description.value = description;
-        formElements.fields.email.value = email;
-        formElements.fields.birthDate.value = birthDate;
-        showIdAndChangeElementForEdit();
+    const { id, name, description, email, birthDate } = teacher;
+    formElements.fields.id.value = id;
+    formElements.fields.name.value = name;
+    formElements.fields.description.value = description;
+    formElements.fields.email.value = email;
+    formElements.fields.birthDate.value = birthDate;
+    showIdAndChangeElementForEdit();
 }
 
 

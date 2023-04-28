@@ -13,7 +13,22 @@ export function readTeachers() {
     return getDatabase(dbName);
 }
 
+export function updateTeacher(teacherUpdate) {
+
+    const database = readTeacher().map((teacher) =>
+        (teacher.id === teacherUpdate.id) ? { ...teacher, ...teacherUpdate } : teacher);
+    setDatabase(dbName, database);
+}
+
+export function deleteTeacher(idTeacher) {
+    const teacherIndex = database.findIndex(({ id }) => id === idTeacher);
+    if (teacherIndex !== -1) {
+        database.splice(teacherIndex, 1);
+        setDatabase(dbName, database);
+    }
+}
+
 export function findTeacherById(idTeacher) {
 
-    return readTeachers().find(({id}) => id === parseInt(idTeacher));
+    return readTeachers().find(({ id }) => id === parseInt(idTeacher));
 }
