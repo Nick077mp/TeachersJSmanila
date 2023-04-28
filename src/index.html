@@ -20,8 +20,14 @@
             </article>
             <article class="col-xs-12 col-md-6 mb-3">
                 <form novalidate class="form-floating" id="teacherForm">
+
+                    <div id="containerId" class="form-floating mb-3 d-none">
+                        <input type="number" name="txtId" id="txtId" class="form-control" readonly disabled>
+                        <label for="txtiD">Id del Profe</label>
+                    </div>
+
                     <div class="form-floating mb-3">
-                        <input type="textDescription" name="txtName" id="txtName" class="form-control" required>
+                        <input type="text" name="txtName" id="txtName" class="form-control" required>
                         <label for="textDescription">Nombre</label>
                     </div>
 
@@ -36,6 +42,7 @@
                             class="form-control"></textarea>
                         <label for="textEmail">Correo Electronico</label>
                     </div>
+                    
 
                     <div class="form-floating mb-3">
                         <input type="date" name="txtBirthDate" id="txtBirthDate" cols="30" rows="30"
